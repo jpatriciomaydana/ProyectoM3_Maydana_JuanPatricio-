@@ -310,3 +310,57 @@ body {
 .btn--primary:hover {
   background: #374151;
 }
+
+  /*8. Estados del chat (nuevo) */
+
+/* Burbuja "escribiendo..." con animacion sutil. */
+.message--typing {
+  font-style: italic;
+  opacity: 0.7;
+  animation: typing-pulse 1.2s ease-in-out infinite;
+}
+
+@keyframes typing-pulse {
+  0%,
+  100% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 0.9;
+  }
+}
+
+/* Burbuja roja para el estado de error. */
+.message--error {
+  align-self: center;
+  max-width: 90%;
+  background: #fee2e2;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+/* Composer deshabilitado mientras carga. */
+.chatComposer__input:disabled,
+.chatComposer__send:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.message__retry {
+  display: block;
+  margin: 0.5rem auto 0;
+  padding: 0.25rem 0.75rem;
+  background: #b91c1c;
+  color: white;
+  border: 0;
+  border-radius: 0.25rem;
+  font: inherit;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.message__retry:hover {
+  background: #991b1b;
+}
