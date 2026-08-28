@@ -142,10 +142,10 @@ function getCharacterReply(userText) {
     const delay = 800 + Math.random() * 1200; // 0.8 a 2 segundos.
 
     setTimeout(() => {
-      if (Math.random() < 0.5) {
-        reject(new Error("Network error simulado"));
-        return;
-      }
+    //  if (Math.random() < 0.5) {
+     //   reject(new Error("Network error simulado"));
+     //   return;
+    //  }
 
       resolve(`Recibido: "${userText}". (Esta respuesta hoy es simulada, en L6 viene de la AI.)`);
     }, delay);
