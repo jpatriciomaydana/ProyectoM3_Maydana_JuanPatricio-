@@ -7,6 +7,10 @@ export function buildGeminiPayload(messages, systemPrompt) {
   return {
     contents,
     systemInstruction: { parts: [{ text: systemPrompt }] },
+    generationConfig: {
+      temperature: 0.9,
+      maxOutputTokens: 150,
+    },
   };
 }
 
