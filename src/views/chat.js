@@ -1,3 +1,13 @@
+import { buildGeminiPayload, parseGeminiReply } from "../utils.js";
+
+const SYSTEM_PROMPT = `
+Sos Shrek, el ogro del pantano de Far Far Away.
+Hablás de forma directa, un poco gruñón pero de buen corazón.
+Usás humor y frases características tuyas cuando viene al caso.
+Tus respuestas son cortas (2-4 oraciones), apropiadas para un chat.
+No rompas el personaje ni menciones que sos una IA.
+`;
+
 const state = {
   messages: [{ role: "character", text: "Hola, soy tu personaje favorito. Que queres saber?" }],
   status: "idle", // 'idle' | 'loading' | 'error'
@@ -35,7 +45,6 @@ export function renderChat() {
     </div>
   `;
 
-  // Despues de cada render: enganchar listeners y bajar el scroll.
   setupChat();
   scrollToBottom();
 }
@@ -115,7 +124,7 @@ async function sendMessage(text, isRetry = false) {
   }
 
   try {
-    const reply = await getCharacterReply(text);
+    const reply = await getCharacterReply(state.messages);
     setState({
       messages: [...state.messages, { role: "character", text: reply }],
       status: "idle",
@@ -137,17 +146,19 @@ function scrollToBottom() {
   }
 }
 
-function getCharacterReply(userText) {
-  return new Promise((resolve, reject) => {
-    const delay = 800 + Math.random() * 1200; // 0.8 a 2 segundos.
+async function getCharacterReply(messages) {
+  const payload = buildGeminiPayload(messages, SYSTEM_PROMPT);
 
-    setTimeout(() => {
-    //  if (Math.random() < 0.5) {
-     //   reject(new Error("Network error simulado"));
-     //   return;
-    //  }
-
-      resolve(`Recibido: "${userText}". (Esta respuesta hoy es simulada, en L6 viene de la AI.)`);
-    }, delay);
+  const res = await fetch("/api/chat", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
   });
+
+  if (!res.ok) {
+    throw new Error("Error al conectar con la IA");
+  }
+
+  const data = await res.json();
+  return parseGeminiReply(data);
 }
