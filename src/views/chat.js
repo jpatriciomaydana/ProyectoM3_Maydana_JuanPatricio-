@@ -70,7 +70,7 @@ function renderMessages() {
 
 function renderStatus() {
   if (state.status === "loading") {
-    return `<div class="message message--character message--typing">escribiendo...</div>`;
+    return `<div class="message message--character message--typing">Sacando cera de oído para pensar...</div>`;
   }
 
   if (state.status === "error") {
