@@ -1,114 +1,177 @@
-# Chatea con Shrek 🧅
+# 🧅 Shrek Chat — Proyecto Integrador M3 (FT77)
 
-Single Page Application que permite chatear con Shrek (el ogro de la saga de películas) usando Google Gemini AI.
+¡Bienvenido/a al repositorio de **Shrek Chat**! Este proyecto consiste en el desarrollo de una **Single Page Application** que permite a los usuarios chatear con Shrek, el ogro de la saga de películas, utilizando **Google Gemini AI**.
 
-## 🔗 Demo en vivo
+El proyecto está construido con **JavaScript vanilla** (sin frameworks) para el frontend, routing propio con **History API**, y una **Vercel Serverless Function** que actúa como proxy seguro entre el cliente y la API de Gemini.
 
-**[https://proyecto-m3-juan-patricio-maydana-f.vercel.app](https://proyecto-m3-juan-patricio-maydana-f.vercel.app)**
+---
 
-## Vistas
+## 🚀 Despliegue en Producción (Vercel)
 
-- `/` — Home: bienvenida y botón para empezar a chatear
-- `/chat` — Chat con Shrek
-- `/about` — Información sobre el proyecto
+La aplicación se encuentra desplegada y operativa en:
 
-## Stack técnico
+* 🌐 **URL Pública:** [https://proyecto-m3-juan-patricio-maydana-f.vercel.app](https://proyecto-m3-juan-patricio-maydana-f.vercel.app)
 
-- HTML / CSS (mobile-first, Flexbox, media queries) / JavaScript vanilla
-- Routing SPA con History API
-- Google Gemini AI (`gemini-flash-lite-latest`) vía SDK `@google/generative-ai`
-- Vercel Serverless Functions (proxy seguro para no exponer la API key)
-- Vitest para tests unitarios
-- Desplegado en Vercel
+---
 
-## Estructura del proyecto
+## 🛠️ Tecnologías Utilizadas
 
-```
+* **Frontend:** HTML5, CSS3 (mobile-first, Flexbox, media queries), JavaScript vanilla (ES Modules)
+* **Routing:** History API (`pushState`, `popstate`)
+* **IA:** Google Gemini AI (`gemini-flash-lite-latest`) vía SDK `@google/generative-ai`
+* **Backend:** Vercel Serverless Functions (proxy seguro, oculta la API key del cliente)
+* **Testing:** Vitest
+* **Variables de Entorno:** Dotenv (`.env` local) / Environment Variables de Vercel (producción)
+* **Despliegue:** Vercel (conectado a GitHub, deploy automático en cada push a `main`)
+
+---
+
+## 📂 Arquitectura del Proyecto
+
+```text
 ├── api/
-│   └── chat.js              # Serverless Function: proxy seguro a Gemini
+│   └── chat.js              # Serverless Function: proxy seguro a Gemini AI
 │
 ├── src/
 │   ├── index.html
-│   ├── index.css
-│   ├── main.js               # Punto de entrada, arranca routing
-│   ├── navigation.js         # Intercepción de links + pushState
-│   ├── router.js              # Mapeo de rutas a vistas
-│   ├── utils.js               # Transformación de datos y parseo de respuestas de Gemini
+│   ├── index.css             # Estilos mobile-first + media queries (tablet/desktop)
+│   ├── main.js                # Punto de entrada: arranca routing y navegación
+│   ├── navigation.js          # Intercepción de clicks en links + pushState
+│   ├── router.js               # Mapeo de rutas (/, /chat, /about) a vistas
+│   ├── utils.js                # Transformación de mensajes y parseo de respuestas de Gemini
 │   └── views/
-│       ├── home.js
-│       ├── chat.js
-│       ├── about.js
-│       └── notFound.js
+│       ├── home.js             # Vista de bienvenida
+│       ├── chat.js             # Vista de chat (estado, render, envío de mensajes)
+│       ├── about.js            # Vista de información del proyecto
+│       └── notFound.js         # Vista 404
 │
 ├── test/
-│   └── utils.test.js          # Tests unitarios con Vitest
+│   └── utils.test.js           # Tests unitarios con Vitest
 │
-├── .env                        # Variables de entorno (no se sube al repo)
+├── .env                         # Variables de entorno (no se sube al repo)
 ├── .env.example
 ├── .gitignore
 ├── package.json
 └── README.md
 ```
 
-## Cómo correr el proyecto en local
+---
 
-### 1. Clonar el repositorio
+## 🎭 Personaje y System Prompt
+
+El personaje elegido es **Shrek**, con una personalidad sarcástica, gruñona y de humor negro, definida mediante un *system prompt* que vive en el servidor (`src/views/chat.js`, enviado a la Serverless Function en cada request) — nunca en el cliente de forma editable por el usuario. El prompt define:
+
+* Tono y personalidad (sarcástico, cínico, ocasionalmente protector)
+* Muletillas y expresiones recurrentes del personaje
+* Límite de longitud de respuesta (apropiado para chat)
+* Límites de comportamiento (sale de personaje ante consultas médicas/legales/financieras serias, no inventa datos de actualidad, nunca revela que es una IA)
+
+---
+
+## ⚙️ Configuración e Instalación Local
+
+### Prerrequisitos
+
+* Node.js (v18 o superior)
+* npm
+* Vercel CLI (`npm install -g vercel`)
+* Una API key de [Google AI Studio](https://aistudio.google.com/) (nivel gratuito)
+
+### Pasos de Instalación
+
+**1. Clonar el repositorio:**
 
 ```bash
 git clone https://github.com/jpatriciomaydana/ProyectoM3_Maydana_JuanPatricio-.git
 cd ProyectoM3_Maydana_JuanPatricio-
 ```
 
-### 2. Instalar dependencias
+**2. Instalar dependencias:**
 
 ```bash
 npm install
 ```
 
-### 3. Configurar la API key de Gemini
+**3. Configurar variables de entorno:**
 
-1. Generá una API key gratuita en [Google AI Studio](https://aistudio.google.com/).
-2. Copiá el archivo de ejemplo:
-   ```bash
-   cp .env.example .env
-   ```
-3. Abrí `.env` y pegá tu key:
-   ```
-   GEMINI_API_KEY=tu_key_aca
-   ```
-
-### 4. Instalar Vercel CLI (si no lo tenés)
+Copiá el archivo `.env.example` y renombralo a `.env`:
 
 ```bash
-npm install -g vercel
+cp .env.example .env
 ```
 
-### 5. Correr el proyecto
+Completá tu API key de Gemini en el `.env`:
+
+```
+GEMINI_API_KEY=tu_api_key_aca
+```
+
+**4. Iniciar el servidor en desarrollo:**
 
 ```bash
 vercel dev
 ```
 
-La app queda disponible en `http://localhost:3000`.
+> Se usa `vercel dev` (y no un servidor estático simple como Live Server) porque el proyecto incluye una Serverless Function en `/api` que necesita ese entorno para ejecutarse en local, replicando el comportamiento de producción.
 
-> Nota: se usa `vercel dev` (y no un servidor estático simple) porque el proyecto incluye una Serverless Function en `/api` que necesita ese entorno para ejecutarse en local.
+La aplicación estará disponible en `http://localhost:3000`.
 
-## Tests
+---
+
+## ▲ Guía de Deployment en Vercel
+
+### Cómo se desplegó
+
+1. Se instaló Vercel CLI y se generó un proyecto local con `vercel dev` / `vercel link`.
+2. Se conectó el proyecto de Vercel al repositorio de GitHub desde **Settings → Git** en el dashboard (deploy automático en cada `git push` a `main`).
+3. Vercel detecta automáticamente los archivos dentro de `/api` como Serverless Functions, sin configuración adicional.
+4. Se configuró la variable de entorno con la API key (ver abajo) y se disparó el primer deploy de producción.
+
+### Variables de entorno en Vercel
+
+En el proyecto, dentro de **Settings → Environment Variables**, configurar:
+
+| Variable | Valor | Entorno |
+|---|---|---|
+| `GEMINI_API_KEY` | Tu API key de Google AI Studio | Production |
+
+> Nunca se expone esta key en el código del cliente: solo la lee la Serverless Function (`api/chat.js`) del lado del servidor, vía `process.env.GEMINI_API_KEY`.
+
+---
+
+## 🧪 Testing Automatizado
+
+El proyecto cuenta con una suite de tests unitarios desarrollada con **Vitest**, enfocada en las funciones puras de transformación de datos (sin dependencia de red).
+
+### Cobertura de Tests (5/5 Pasados):
+
+**Utils** (`test/utils.test.js`):
+* `buildGeminiPayload`: convierte los mensajes internos (`{role, text}`) al formato que espera la API de Gemini (`contents` con `role`/`parts`).
+* `buildGeminiPayload`: arma correctamente el `systemInstruction` a partir del system prompt.
+* `buildGeminiPayload`: incluye `generationConfig` (temperature, maxOutputTokens).
+* `parseGeminiReply`: extrae el texto de una respuesta válida de Gemini.
+* `parseGeminiReply`: lanza un error controlado cuando la respuesta no contiene texto.
+
+
+### Ejecución de Tests
 
 ```bash
 npm run test
 ```
 
-Corre los tests unitarios con Vitest sobre las funciones de transformación de datos (`src/utils.js`), sin necesidad de conexión real a la API.
+---
 
-## Despliegue
+## 🤖 Declaración sobre el uso de Inteligencia Artificial
 
-El proyecto está conectado a este repositorio de GitHub — cada push a `main` dispara un deploy automático en Vercel. La variable `GEMINI_API_KEY` está configurada como variable de entorno en el dashboard de Vercel (Production).
-
-## Uso de IA en el desarrollo
-
-
-- Qué prompts se utilizaron durante el desarrollo
+<!--
+Completar acá:
+- Qué prompts se utilizaron durante el desarrollo (ej: definición del system prompt de Shrek, debugging de errores de routing/casing de archivos, estructura de la serverless function, etc.)
 - Cómo influyeron en la implementación
 - Qué decisiones se tomaron a partir de las respuestas generadas
---
+-->
+
+---
+
+## 👤 Autor
+
+Juan Patricio Maydana — Estudiante de Desarrollo Full Stack (FT77)
