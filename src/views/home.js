@@ -6,7 +6,7 @@ export function renderHome() {
         <div class="homeHero__content">
           <h1 class="homeHero__title">Chatea con tu personaje favorito</h1>
           <p class="homeHero__description">
-            Experimenta una conversación inmersiva impulsada por AI. 
+            Experimenta una conversación inmersiva con personajes de la saga Shrek impulsada por AI. 
             Elige tu personaje preferido, haz preguntas, resuelve dudas o simplemente diviértete interactuando en tiempo real.
           </p>
           <a class="btn btn--primary homeHero__btn" href="/chat">Empezar a chatear</a>

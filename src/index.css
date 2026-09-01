@@ -1,7 +1,7 @@
 :root {
   /* Paleta "verde ogro + marron" */
-  --color-bg: #FAF3D8;
-  --color-bg-desktop: #F0E8C6;
+  --color-bg: #E9F1DC;
+  --color-bg-desktop: #DCE7C6;
   --color-surface: #FFFFFF;
   --color-primary: #8CAE3E;        /* verde piel de ogro, vivo */
   --color-primary-dark: #4C6019;   /* verde oscuro, saturado (no negro) */
@@ -392,11 +392,15 @@ body {
 
 .homeHero__img {
   width: 100%;
-  max-height: 320px;
+  max-width: 420px;
+  aspect-ratio: 1 / 1; /* coincide con la foto original (cuadrada) */
   object-fit: cover;
+  object-position: top; /* si hay que recortar algo, prioriza la cabeza */
   border-radius: 1rem;
   border: 2px solid var(--color-primary); /* marco verde vivo */
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  margin: 0 auto;
+  display: block;
 }
 
 @media (min-width: 768px) {
@@ -410,9 +414,6 @@ body {
     flex: 1;
   }
 
-  .homeHero__img {
-    max-height: 380px;
-  }
 }
 
 /* 8. Estados del chat */
@@ -466,4 +467,61 @@ body {
   flex-direction: column;
   flex: 1;
   min-height: 0;
+}
+
+/* ========================================
+   9. Vista About
+   ======================================== */
+.aboutHeader {
+  margin-bottom: 2rem;
+}
+
+.aboutHeader__subtitle {
+  font-style: italic;
+}
+
+.aboutContent {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+  text-align: left;
+}
+
+.aboutSection {
+  background: var(--color-surface);
+  border: 1px solid var(--color-bubble-border);
+  border-radius: 1rem;
+  padding: 1.25rem 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.aboutSection__title {
+  color: var(--color-primary-dark);
+  font-size: 1.125rem;
+  margin-bottom: 0.5rem;
+}
+
+.aboutSection p {
+  color: var(--color-text);
+  margin-bottom: 0;
+}
+
+@media (min-width: 768px) {
+  .aboutContent {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .aboutSection:last-child {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (min-width: 1024px) {
+  .aboutContent {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .aboutSection:last-child {
+    grid-column: auto;
+  }
 }
