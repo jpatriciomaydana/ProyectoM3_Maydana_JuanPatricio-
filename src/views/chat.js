@@ -1,4 +1,11 @@
 import { buildGeminiPayload, parseGeminiReply } from "../utils.js";
+import {
+  saveHistory,
+  loadHistory,
+  clearHistory,
+  hasHistory,
+  getLastSavedAt,
+} from "../chatStorage.js";
 
 const SYSTEM_PROMPT = `
 Sos Shrek, el ogro malhumorado de la saga de películas Shrek.
@@ -17,8 +24,13 @@ LÍMITES:
 - Nunca digas que sos una inteligencia artificial ni rompas el personaje fuera de los casos de arriba.
 `;
 
+const WELCOME_MESSAGE = {
+  role: "character",
+  text: "¡Bienvenido al pantano... digo al chat! soy Shrek ¿en que te puedo ayudar?",
+};
+
 const state = {
-  messages: [{ role: "character", text: "¡Bienvenido al pantano... digo al chat! soy Shrek ¿en que te puedo ayudar?" }],
+  messages: loadHistory() ?? [WELCOME_MESSAGE],
   status: "idle", // 'idle' | 'loading' | 'error'
   error: null,
   lastUserMessage: null,
@@ -29,8 +41,16 @@ export function renderChat() {
   app.innerHTML = `
     <div class="chatApp">
       <header class="chatHeader">
-        <h1 class="chatHeader__title">Chat</h1>
-        <p class="chatHeader__subtitle">Con tu personaje favorito</p>
+        <div class="chatHeader__identity">
+          <img class="chatHeader__avatar" src="/public/img/shrek.png" alt="Shrek" />
+          <h1 class="chatHeader__title">Chat con Shrek</h1>
+        </div>
+        <div class="chatHeader__actions">
+          ${renderHistoryIndicator()}
+          <button class="clearHistoryBtn" id="clearHistoryBtn" type="button">
+            Borrar historial
+          </button>
+        </div>
       </header>
 
       <main class="chatMessages" id="chatMessages" aria-live="polite">
@@ -85,6 +105,15 @@ function renderStatus() {
   return "";
 }
 
+function renderHistoryIndicator() {
+  if (!hasHistory()) return "";
+  const savedAt = getLastSavedAt();
+  const time = savedAt
+    ? new Date(savedAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
+    : "";
+  return `<p class="historyIndicator">Historial guardado${time ? ` · ${time}` : ""}</p>`;
+}
+
 function escapeHtml(str) {
   const div = document.createElement("div");
   div.textContent = str;
@@ -93,6 +122,9 @@ function escapeHtml(str) {
 
 function setState(updates) {
   Object.assign(state, updates);
+  if (updates.messages) {
+    saveHistory(state.messages);
+  }
   renderChat();
 }
 
@@ -100,6 +132,7 @@ function setupChat() {
   const $form = document.querySelector("#chatComposer");
   const $input = document.querySelector("#chatInput");
   const $retry = document.querySelector("#retryBtn");
+  const $clearBtn = document.querySelector("#clearHistoryBtn");
 
   $form.addEventListener("submit", async (event) => {
     event.preventDefault();
@@ -115,6 +148,22 @@ function setupChat() {
     if (state.lastUserMessage) {
       sendMessage(state.lastUserMessage, true);
     }
+  });
+
+  $clearBtn?.addEventListener("click", () => {
+    const confirmado = confirm("¿Borrar todo el historial de la charla con Shrek?");
+    if (!confirmado) return;
+
+    clearHistory();
+    // Reset directo (sin pasar por setState) para no volver a guardar
+    // el mensaje de bienvenida apenas se borra el historial.
+    Object.assign(state, {
+      messages: [WELCOME_MESSAGE],
+      status: "idle",
+      error: null,
+      lastUserMessage: null,
+    });
+    renderChat();
   });
 
   $input.focus();
