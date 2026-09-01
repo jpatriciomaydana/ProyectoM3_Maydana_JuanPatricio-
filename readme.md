@@ -28,15 +28,19 @@ La aplicación se encuentra desplegada y operativa en:
 
 ## 📂 Arquitectura del Proyecto
 
-```text
 ├── api/
-│   └── chat.js              # Serverless Function: proxy seguro a Gemini AI
+│   └── chat.js                 # Serverless Function: proxy seguro a Gemini AI
+│
+├── screenshots/                # Evidencias de prompts e interacciones con IA
+│   ├── prompt-1
+│   ├── prompt-2
+│   └── prompt-3
 │
 ├── src/
 │   ├── index.html
-│   ├── index.css             # Estilos mobile-first + media queries (tablet/desktop)
-│   ├── main.js                # Punto de entrada: arranca routing y navegación
-│   ├── navigation.js          # Intercepción de clicks en links + pushState
+│   ├── index.css                # Estilos mobile-first + media queries (tablet/desktop)
+│   ├── main.js                 # Punto de entrada: arranca routing y navegación
+│   ├── navigation.js           # Intercepción de clicks en links + pushState
 │   ├── router.js               # Mapeo de rutas (/, /chat, /about) a vistas
 │   ├── utils.js                # Transformación de mensajes y parseo de respuestas de Gemini
 │   └── views/
@@ -48,14 +52,11 @@ La aplicación se encuentra desplegada y operativa en:
 ├── test/
 │   └── utils.test.js           # Tests unitarios con Vitest
 │
-├── .env                         # Variables de entorno (no se sube al repo)
+├── .env                        # Variables de entorno (no se sube al repo)
 ├── .env.example
 ├── .gitignore
 ├── package.json
 └── README.md
-```
-
----
 
 ## 🎭 Personaje y System Prompt
 
@@ -163,14 +164,17 @@ npm run test
 
 ## 🤖 Declaración sobre el uso de Inteligencia Artificial
 
-<!--
-Completar acá:
-- Qué prompts se utilizaron durante el desarrollo (ej: definición del system prompt de Shrek, debugging de errores de routing/casing de archivos, estructura de la serverless function, etc.)
-- Cómo influyeron en la implementación
-- Qué decisiones se tomaron a partir de las respuestas generadas
--->
+Durante el desarrollo de este proyecto integrador se hizo uso de asistentes de Inteligencia Artificial (Gemini / Claude) como herramientas de soporte técnico y de desarrollo para las siguientes tareas:
 
----
+* **Depuración y Resolución de Errores** 
+* **Diseño y Estructuración de API** 
+* **Seguridad y Persistencia** 
+* **Estrategia de Testing y Arquitectura** 
+> **Control y Responsabilidad:** Todas las soluciones y código generados con la asistencia de la IA fueron revisados, testeados, comprendidos y adaptados manualmente para garantizar el cumplimiento estricto de la consigna y las buenas prácticas del proyecto.
+
+### 📷 Evidencias de Interacción con IA
+
+En la carpeta screenshots se encuentran capturas de algunos ejemplos de prompts con la IA.
 
 ## 👤 Autor
 
