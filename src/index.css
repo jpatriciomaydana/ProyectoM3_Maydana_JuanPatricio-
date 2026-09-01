@@ -37,7 +37,8 @@ body {
   background: var(--color-bg);
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: 100vh; /* fallback para navegadores viejos */
+  height: 100dvh; /* alto real visible, se ajusta con el teclado */
   overflow: hidden;
 }
 
@@ -188,24 +189,6 @@ body {
   color: var(--color-text-muted);
 }
 
-.mainFooter__links {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 1rem;
-}
-
-.mainFooter__link {
-  font-size: 0.8125rem;
-  color: var(--color-text-muted);
-  text-decoration: none;
-}
-
-.mainFooter__link:hover {
-  color: var(--color-primary-dark);
-  text-decoration: underline;
-}
-
 /* 5. Tablet: 768px en adelante */
 @media (min-width: 768px) {
   .chatApp {
@@ -240,14 +223,6 @@ body {
   }
 
   .mainFooter__text {
-    font-size: 0.875rem;
-  }
-
-  .mainFooter__links {
-    gap: 1.5rem;
-  }
-
-  .mainFooter__link {
     font-size: 0.875rem;
   }
 }
@@ -293,10 +268,6 @@ body {
 
   .mainFooter__text {
     font-size: 0.9375rem;
-  }
-
-  .mainFooter__links {
-    gap: 2rem;
   }
 }
 
@@ -467,6 +438,12 @@ body {
   flex-direction: column;
   flex: 1;
   min-height: 0;
+}
+
+/* Ocultar el footer en la vista de Chat: le da todo el espacio
+   disponible a la conversación, sobre todo con el teclado abierto */
+body.route-chat .mainFooter {
+  display: none;
 }
 
 /* ========================================
