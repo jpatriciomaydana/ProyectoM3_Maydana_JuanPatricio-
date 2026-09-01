@@ -14,7 +14,7 @@ export function renderHome() {
         
         <div class="homeHero__media">
           <img 
-            src="/img/shrek.png" 
+            src="/public/img/shrek.png" 
             alt="Shrek, el ogro protagonista, listo para chatear" 
             class="homeHero__img"
             loading="lazy"
