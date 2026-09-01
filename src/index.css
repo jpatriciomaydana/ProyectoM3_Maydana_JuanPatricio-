@@ -3,10 +3,10 @@
   --color-bg: #E9F1DC;
   --color-bg-desktop: #DCE7C6;
   --color-surface: #FFFFFF;
-  --color-primary: #8CAE3E;        /* verde piel de ogro, vivo */
-  --color-primary-dark: #4C6019;   /* verde oscuro, saturado (no negro) */
-  --color-primary-darker: #34430F; /* hover de elementos verdes oscuros */
-  --color-accent: #8B5A2B;         /* marron, SOLO botones */
+  --color-primary: #8CAE3E;        
+  --color-primary-dark: #4C6019;   
+  --color-primary-darker: #34430F; 
+  --color-accent: #8B5A2B;         
   --color-accent-dark: #6E4420;
   --color-text: #2B3A12;
   --color-text-muted: #5C7A22;
@@ -37,21 +37,22 @@ body {
   background: var(--color-bg);
   display: flex;
   flex-direction: column;
-  height: 100vh; /* fallback para navegadores viejos */
+  height: 100vh; 
   height: 100dvh; /* alto real visible, se ajusta con el teclado */
   overflow: hidden;
 }
 
-/* Navbar principal — verde ogro vivo como color de marca */
+
 .mainNav {
   display: flex;
+  justify-content: center;
   gap: 1rem;
   padding: 0.75rem 1rem;
   background: var(--color-primary);
   border-bottom: 2px solid var(--color-primary-darker);
 }
 
-/* Links de navegación: pills en verde oscuro sobre navbar verde vivo */
+
 .mainNav__link {
   color: #ffffff;
   background: var(--color-primary-dark);
@@ -123,7 +124,7 @@ body {
   align-self: flex-start;
   background: var(--color-bubble-bg);
   color: var(--color-text);
-  border: 1px solid var(--color-primary); /* borde verde vivo, mas pop */
+  border: 1px solid var(--color-primary); 
 }
 
 .message--user {
@@ -218,7 +219,7 @@ body {
 
   .mainFooter__content {
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: center;
     text-align: left;
   }
 
@@ -294,7 +295,7 @@ body {
   color: var(--color-text-muted);
 }
 
-/* Botón principal genérico y de la Home — marron, boton real */
+
 .btn {
   display: inline-block;
   padding: 0.75rem 1.25rem;
@@ -364,7 +365,7 @@ body {
 .homeHero__img {
   width: 100%;
   max-width: 300px;
-  aspect-ratio: 1 / 1; /* coincide con la foto original (cuadrada) */
+  aspect-ratio: 1 / 1; 
   object-fit: cover;
   object-position: top; /* si hay que recortar algo, prioriza la cabeza */
   border-radius: 1rem;
