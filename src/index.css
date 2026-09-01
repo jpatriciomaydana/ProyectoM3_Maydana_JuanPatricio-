@@ -392,7 +392,7 @@ body {
 
 .homeHero__img {
   width: 100%;
-  max-width: 420px;
+  max-width: 300px;
   aspect-ratio: 1 / 1; /* coincide con la foto original (cuadrada) */
   object-fit: cover;
   object-position: top; /* si hay que recortar algo, prioriza la cabeza */
