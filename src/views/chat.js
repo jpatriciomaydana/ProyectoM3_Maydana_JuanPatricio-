@@ -18,7 +18,7 @@ LÍMITES:
 `;
 
 const state = {
-  messages: [{ role: "character", text: "Hola, soy tu personaje favorito. Que queres saber?" }],
+  messages: [{ role: "character", text: "¡Bienvenido al pantano... digo al chat! soy Shrek ¿en que te puedo ayudar?" }],
   status: "idle", // 'idle' | 'loading' | 'error'
   error: null,
   lastUserMessage: null,
