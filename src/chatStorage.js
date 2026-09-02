@@ -1,50 +1,53 @@
-// chatStorage.js
-// Persistencia del historial de chat en localStorage.
+// Persistencia del historial de chat en localStorage por personaje.
 // Proyecto "Chat con tu personaje favorito" (Shrek)
 
-const STORAGE_KEY = "shrekChat_history";
+const STORAGE_KEY = "shrekChat_history_v2";
 
-/**
- * Guarda el array de mensajes junto con la hora de guardado.
- * messages: [{ role: "user" | "character", text: string }]
- */
-export function saveHistory(messages) {
+function getStorageMap() {
   try {
-    const payload = { messages, savedAt: Date.now() };
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return {};
+    const parsed = JSON.parse(raw);
+    return parsed && typeof parsed === "object" ? parsed : {};
+  } catch {
+    return {};
+  }
+}
+
+export function saveHistory(characterId, messages) {
+  try {
+    const map = getStorageMap();
+    map[characterId] = {
+      messages,
+      savedAt: Date.now(),
+    };
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(map));
     return true;
   } catch (err) {
-    // modo privado, cuota excedida, etc. — no debe romper el chat
     console.warn("No se pudo guardar el historial:", err);
     return false;
   }
 }
 
-/**
- * Devuelve el array de mensajes guardado, o null si no hay
- * nada guardado o el contenido está corrupto.
- */
-export function loadHistory() {
+export function loadHistory(characterId) {
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return null;
-    const parsed = JSON.parse(raw);
-    if (!parsed || !Array.isArray(parsed.messages) || parsed.messages.length === 0) {
+    const map = getStorageMap();
+    const entry = map[characterId];
+    if (!entry || !Array.isArray(entry.messages) || entry.messages.length === 0) {
       return null;
     }
-    return parsed.messages;
+    return entry.messages;
   } catch (err) {
     console.warn("Historial corrupto, se descarta:", err);
     return null;
   }
 }
 
-/**
- * Borra el historial guardado.
- */
-export function clearHistory() {
+export function clearHistory(characterId) {
   try {
-    localStorage.removeItem(STORAGE_KEY);
+    const map = getStorageMap();
+    delete map[characterId];
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(map));
     return true;
   } catch (err) {
     console.warn("No se pudo borrar el historial:", err);
@@ -52,22 +55,14 @@ export function clearHistory() {
   }
 }
 
-/**
- * true si hay historial guardado y válido.
- */
-export function hasHistory() {
-  return loadHistory() !== null;
+export function hasHistory(characterId) {
+  return loadHistory(characterId) !== null;
 }
 
-/**
- * Timestamp (ms) del último guardado, o null.
- */
-export function getLastSavedAt() {
+export function getLastSavedAt(characterId) {
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return null;
-    const parsed = JSON.parse(raw);
-    return parsed?.savedAt ?? null;
+    const map = getStorageMap();
+    return map[characterId]?.savedAt ?? null;
   } catch {
     return null;
   }

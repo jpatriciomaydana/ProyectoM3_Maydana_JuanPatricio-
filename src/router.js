@@ -13,7 +13,8 @@ export function router() {
   const path = window.location.pathname;
   const render = routes[path] || renderNotFound;
 
-  //  ocultar el footer solo en /chat. //
+  // Le agrega/saca al <body> una clase segun la ruta activa,
+  // asi el CSS puede ocultar el footer solo en /chat.
   document.body.classList.toggle("route-chat", path === "/chat");
 
   render();

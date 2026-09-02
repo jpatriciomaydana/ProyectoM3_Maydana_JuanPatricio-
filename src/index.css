@@ -367,7 +367,7 @@ body {
 .view--home {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   text-align: left;
 }
@@ -545,4 +545,165 @@ body.route-chat .mainFooter {
   .aboutSection:last-child {
     grid-column: auto;
   }
+}
+/* ========================================
+   10. Avatar emoji + Galería de personajes
+   ======================================== */
+.chatHeader__avatar--emoji {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  background: var(--color-bubble-bg);
+}
+
+.characterGallery {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+  margin-top: 1.5rem;
+}
+
+/* Tarjeta con la foto de fondo completa + texto superpuesto */
+.characterCard {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  aspect-ratio: 4 / 3; /* CAMBIO: 4/3 o 1/1 en lugar de 4/5 para hacerlas más compactas verticalmente */
+  max-height: 260px;    /* NUEVO: Límite máximo de alto en desktop */
+  padding: 1.25rem 1rem;
+  background: var(--color-surface);
+  border: 2px solid var(--color-border);
+  border-radius: 1rem;
+  overflow: hidden;
+  cursor: pointer;
+  font-family: inherit;
+  transition: transform 0.15s, border-color 0.15s, box-shadow 0.15s;
+}
+
+.characterCard:hover,
+.characterCard:focus-visible {
+  border-color: var(--card-accent, var(--color-primary));
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+}
+
+/* Degradado oscuro para que el texto se lea sobre la foto */
+.characterCard::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.8) 0%,
+    rgba(0, 0, 0, 0.45) 35%,
+    rgba(0, 0, 0, 0) 65%
+  );
+  z-index: 1;
+  pointer-events: none;
+}
+
+.characterCard__avatar {
+  font-size: 3rem;
+  line-height: 1;
+}
+
+.characterCard__name {
+  position: relative;
+  z-index: 2;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #ffffff;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.7);
+}
+
+.characterCard__tagline {
+  position: relative;
+  z-index: 2;
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.85);
+  text-align: center;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+}
+
+@media (min-width: 768px) {
+  .characterGallery {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* ========================================
+   11. Galería de personajes en Home
+   ======================================== */
+.homeHeader {
+  text-align: center;
+  max-width: 40rem;
+  margin: 0 auto 0.5rem;
+}
+
+/* La imagen cubre toda la tarjeta (incluida la zona del texto) */
+.characterCard__avatarImg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 10%; 
+  z-index: 0;
+}
+
+.characterCard[data-id="galletita"] .characterCard__avatarImg {
+  object-position: center 30%;
+}
+
+
+/* Layout del Header en el Chat */
+.chatHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.chatHeader__main {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.chatHeader__avatarImg {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #819345;
+  background-color: #f4f6ee;
+}
+
+.chatHeader__info {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Botón Borrar Historial discreto y compacto */
+.chatHeader__clearBtn {
+  padding: 0.35rem 0.75rem;
+  font-size: 0.8125rem;
+  font-family: inherit;
+  font-weight: 500;
+  color: #7f1d1d;
+  background-color: #fef2f2;
+  border: 1px solid #fca5a5;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s ease;
+}
+
+.chatHeader__clearBtn:hover {
+  background-color: #fee2e2;
+  border-color: #f87171;
 }

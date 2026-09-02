@@ -1,8 +1,8 @@
 # 🧅 Shrek Chat — Proyecto Integrador M3 (FT77)
 
-¡Bienvenido/a al repositorio de **Shrek Chat**! Este proyecto consiste en el desarrollo de una **Single Page Application** que permite a los usuarios chatear con Shrek, el ogro de la saga de películas, utilizando **Google Gemini AI**.
+¡Bienvenido/a al repositorio de **Shrek Chat**! Este proyecto consiste en el desarrollo de una **Single Page Application (SPA)** interactiva que permite a los usuarios chatear en tiempo real con personajes de la saga de Shrek (Shrek, Burro y Galletita de Jengibre) utilizando la tecnología de **Google Gemini AI**.
 
-El proyecto está construido con **JavaScript vanilla** (sin frameworks) para el frontend, routing propio con **History API**, y una **Vercel Serverless Function** que actúa como proxy seguro entre el cliente y la API de Gemini.
+El proyecto está construido con **JavaScript vanilla** (sin frameworks) para el frontend, enrutamiento propio con **History API**, y una **Vercel Serverless Function** que actúa como proxy seguro entre el cliente y la API de Gemini.
 
 ---
 
@@ -14,60 +14,68 @@ La aplicación se encuentra desplegada y operativa en:
 
 ---
 
+## ✨ Características Destacadas
+
+* **Selección de Personajes:** Elige entre Shrek, Burro o Galletita de Jengibre para iniciar una conversación temática personalizada.
+* **Persistencia e Historial Independiente:** Los mensajes se guardan por personaje en `localStorage`, permitiendo reanudar o reiniciar el chat en cualquier momento.
+* **Enrutamiento SPA Robustecido:** Navegación fluida entre `/`, `/chat` y `/about` con manejo de eventos `popstate` para asegurar que las flechas de retroceso y avance del navegador funcionen correctamente.
+* **Manejo de Errores y Reintento:** Interfaz con estados de carga (typing) y alertas con opción de reintentar el envío de mensajes si falla la conexión.
+* **Diseño Responsive:** Layout adaptativo (Mobile-First) estilizado con CSS3 utilizando una paleta de colores temáticos inspirados en el pantano.
+
+---
+
 ## 🛠️ Tecnologías Utilizadas
 
-* **Frontend:** HTML5, CSS3 (mobile-first, Flexbox, media queries), JavaScript vanilla (ES Modules)
+* **Frontend:** HTML5, CSS3 (Mobile-First, BEM, Flexbox, Media Queries), JavaScript Vanilla (ES Modules)
 * **Routing:** History API (`pushState`, `popstate`)
-* **IA:** Google Gemini AI (`gemini-flash-lite-latest`) vía SDK `@google/generative-ai`
-* **Backend:** Vercel Serverless Functions (proxy seguro, oculta la API key del cliente)
+* **IA:** Google Gemini AI via SDK `@google/genai`
+* **Backend / Serverless:** Vercel Serverless Functions (Proxy seguro en Node.js que protege la API Key)
+* **Persistencia Local:** `localStorage` API
 * **Testing:** Vitest
 * **Variables de Entorno:** Dotenv (`.env` local) / Environment Variables de Vercel (producción)
-* **Despliegue:** Vercel (conectado a GitHub, deploy automático en cada push a `main`)
+* **Despliegue:** Vercel (conectado a GitHub con CD automático)
 
 ---
 
 ## 📂 Arquitectura del Proyecto
 
+```text
 ├── api/
-│   └── chat.js                 # Serverless Function: proxy seguro a Gemini AI
-│
+│   └── chat.js                 # Serverless Function: Proxy seguro e inyección de System Prompts
 ├── screenshots/                # Evidencias de prompts e interacciones con IA
-│   ├── prompt-1
-│   ├── prompt-2
-│   └── prompt-3
-│
 ├── src/
-│   ├── index.html
-│   ├── index.css                # Estilos mobile-first + media queries (tablet/desktop)
-│   ├── main.js                 # Punto de entrada: arranca routing y navegación
-│   ├── navigation.js           # Intercepción de clicks en links + pushState
-│   ├── router.js               # Mapeo de rutas (/, /chat, /about) a vistas
-│   ├── utils.js                # Transformación de mensajes y parseo de respuestas de Gemini
-│   └── views/
-│       ├── home.js             # Vista de bienvenida
-│       ├── chat.js             # Vista de chat (estado, render, envío de mensajes)
-│       ├── about.js            # Vista de información del proyecto
-│       └── notFound.js         # Vista 404
-│
+│   ├── assets/                 # Recursos multimedia e imágenes de la aplicación
+│   ├── views/                  # Vistas de la SPA (home.js, chat.js, about.js, notFound.js)
+│   ├── characters.js           # Definición de personajes y configuraciones
+│   ├── chatStorage.js          # Gestión de la persistencia en localStorage
+│   ├── index.css               # Estilos globales y diseño temático mobile-first
+│   ├── main.js                 # Inicialización y punto de entrada principal
+│   ├── navigation.js           # Intercepción de eventos de clics e enlaces
+│   ├── router.js               # Control de rutas y renderizado de la SPA
+│   └── utils.js                # Funciones puras de formateo y parseo
 ├── test/
-│   └── utils.test.js           # Tests unitarios con Vitest
-│
-├── .env                        # Variables de entorno (no se sube al repo)
+│   └── utils.test.js           # Suite de pruebas unitarias con Vitest
+├── .env                        # Variables de entorno locales (gitignored)
 ├── .env.example
 ├── .gitignore
+├── index.html                  # Contenedor HTML principal (#app)
 ├── package.json
-└── README.md
+├── package-lock.json
+├── README.md
+└── vercel.json                 # Configuración de rutas y funciones para Vercel
 
 ## 🎭 Personaje y System Prompt
 
-El personaje elegido es **Shrek**, con una personalidad sarcástica, gruñona y de humor negro, definida mediante un *system prompt* que vive en el servidor (`src/views/chat.js`, enviado a la Serverless Function en cada request) — nunca en el cliente de forma editable por el usuario. El prompt define:
+Los personajes (Shrek, Burro y Galletita) cuentan con personalidades únicas definidas mediante System Prompts gestionados del lado del servidor en la Serverless Function (api/chat.js). De esta manera, el usuario no puede alterar las instrucciones del modelo desde el frontend.
 
-* Tono y personalidad (sarcástico, cínico, ocasionalmente protector)
-* Muletillas y expresiones recurrentes del personaje
-* Límite de longitud de respuesta (apropiado para chat)
-* Límites de comportamiento (sale de personaje ante consultas médicas/legales/financieras serias, no inventa datos de actualidad, nunca revela que es una IA)
+Cada prompt define:
 
----
+Tono y Personalidad: Respuestas sarcásticas para Shrek, parlanchinas y entusiastas para Burro, o temerosas/dulces para Galletita.
+
+Límites de Respuesta: Mantener un formato conciso adecuado para un chat conversacional.
+
+Restricciones de Comportamiento: Salir del personaje frente a temas serios/legales/médicos, no inventar actualidad y mantener la inmersión sin revelar el funcionamiento interno de la IA.
+
 
 ## ⚙️ Configuración e Instalación Local
 
@@ -168,7 +176,7 @@ Durante el desarrollo de este proyecto integrador se hizo uso de asistentes de I
 
 * **Depuración y Resolución de Errores** 
 * **Diseño y Estructuración de API** 
-* **Seguridad y Persistencia** 
+* **Seguridad y Persistencia** Ñ
 * **Estrategia de Testing y Arquitectura** 
 > **Control y Responsabilidad:** Todas las soluciones y código generados con la asistencia de la IA fueron revisados, testeados, comprendidos y adaptados manualmente para garantizar el cumplimiento estricto de la consigna y las buenas prácticas del proyecto.
 
