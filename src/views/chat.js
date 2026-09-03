@@ -131,6 +131,10 @@ function setupChatListeners(character, localState, refreshView) {
   const $retry = document.querySelector("#retryBtn");
   const $clearBtn = document.querySelector("#clearHistoryBtn");
 
+  $input?.addEventListener("focus", () => {
+    setTimeout(scrollToBottom, 300);
+  });
+
   $form?.addEventListener("submit", (event) => {
     event.preventDefault();
     const text = $input.value.trim();
@@ -243,4 +247,13 @@ async function getCharacterReply(messagesHistory, character) {
   }
 
   return replyText;
+}
+
+if (window.visualViewport) {
+  window.visualViewport.addEventListener("resize", () => {
+    const $messages = document.querySelector("#chatMessages");
+    if ($messages) {
+      $messages.scrollTop = $messages.scrollHeight;
+    }
+  });
 }
