@@ -17,5 +17,24 @@ export function router() {
   // asi el CSS puede ocultar el footer solo en /chat.
   document.body.classList.toggle("route-chat", path === "/chat");
 
+  // marca como activo el link de navegación que corresponde a la ruta actual
+  updateActiveNavLink(path);
+
   render();
+}
+
+function updateActiveNavLink(path) {
+  document.querySelectorAll(".mainNav__link").forEach(($link) => {
+    const linkPath = new URL($link.href).pathname;
+    const isActive = linkPath === path;
+
+    $link.classList.toggle("mainNav__link--active", isActive);
+
+    // aria-current se logra indicar a lectores de pantalla cuál es la página actual
+    if (isActive) {
+      $link.setAttribute("aria-current", "page");
+    } else {
+      $link.removeAttribute("aria-current");
+    }
+  });
 }
